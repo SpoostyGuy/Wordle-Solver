@@ -128,7 +128,7 @@ async function ready() {
             return resposne
         })
     }
-    type('salet')
+    type('adieu')
     await new Promise(r => setTimeout(r, 2500));
     var word1 = getWord()
     if (word1 == 'won') {
