@@ -10,11 +10,89 @@ function type(word) {
 async function ready() {
     var list = {}
 
-    await fetch('https://raw.githubusercontent.com/charlesreid1/five-letter-words/master/sgb-words.txt')
+    await fetch('https://raw.githubusercontent.com/tabatkins/wordle-list/main/words')
         .then(res => res.text())
         .then(res => {
             list = res.split('\n')
         })
+    
+    function wordleBasics(guess,soFar,word) {
+        var table = {}
+        guess.split('').forEach(function(val,index) {
+            if (word.includes(val)) {
+                if (word.charAt(index) == val) {
+                    table[val] = 'correct'
+                } else {
+                    table[val] = 'present'
+                }
+            } else {
+                table[val] = 'absent'
+            }
+        })
+        if (table[Object.keys(table)[0]] == 'correct')  {
+            if (table[Object.keys(table)[1]] == 'correct') {
+                if (table[Object.keys(table)[2]] == 'correct') {
+                    if (table[Object.keys(table)[3]] == 'correct') {
+                        if (table[Object.keys(table)[4]] == 'correct') {
+                            return 'won'
+                        }
+                    }
+                }
+            }
+        }
+        soFar.push(table)
+        return soFar
+    }
+    
+    function getBestStartingWord() {
+        var array = list
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        console.log(array)
+        var pointsYE = {}
+        array.forEach(async function(val) {
+            var array2 = array
+            var best = undefined
+            var points = 9999999999999999999999999999
+            for (let i = array2.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = array2[i];
+                array2[i] = array2[j];
+                array2[j] = temp;
+            }
+            array2.forEach(async function(val2) {
+                var soFar = wordleBasics(val2,[],val)
+                for (let i = 0; i < 2; i++) {
+                    var word = getWord(soFar)
+                    soFar = wordleBasics(word,soFar,val)
+                    if (soFar == 'won') {
+                        if (points > i) {
+                            best = val2
+                            points = i
+                            break
+                        } else {
+                            break
+                        }
+                    }
+                }
+            })
+            if (best != undefined) {
+                if (pointsYE[best] != undefined) {
+                    pointsYE[best] = pointsYE[best] +1
+                } else {
+                    pointsYE[best] = 1
+                }
+            }
+            console.log(best)
+        })
+        console.log(pointsYE)
+        var obj = pointsYE
+        console.log(Object.keys(obj).reduce(function(a, b){ return obj[a] > obj[b] ? a : b }))
+    }
 
     function convertJSON() {
         var table = []
@@ -41,8 +119,13 @@ async function ready() {
         return table
     }
 
-    function getWord() {
-        var tab = convertJSON()
+    function getWord(tab2) {
+        var tab = undefined
+        if (tab2 != undefined) {
+            tab = tab2
+        } else {
+            tab = convertJSON()
+        }
         if (tab == 'won') {
             return tab
         }
