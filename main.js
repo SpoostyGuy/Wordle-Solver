@@ -134,76 +134,119 @@ async function ready() {
             tab.forEach(function(val2) {                
                 if (val2[Object.keys(val2)[0]] == 'present') {
                     if (val.includes(Object.keys(val2)[0]) === false) {
+                        console.log('1')
+                        console.log(val)
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[0]] == 'correct') {
                     if (val.charAt(0) != Object.keys(val2)[0]) {
+                                                console.log('2')
+                        console.log(val)
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[0]] == 'absent') {
                     if (val.includes(Object.keys(val2)[0])) {
+                                                console.log('3')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                  if (val2[Object.keys(val2)[1]] == 'present') {
                     if (val.includes(Object.keys(val2)[1]) === false) {
+                                                console.log('4')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[1]] == 'correct') {
                     if (val.charAt(1) != Object.keys(val2)[1]) {
+                                                console.log('5')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[1]] == 'absent') {
                     if (val.includes(Object.keys(val2)[1])) {
+                                                console.log('6')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                  if (val2[Object.keys(val2)[2]] == 'present') {
                     if (val.includes(Object.keys(val2)[2]) === false) {
+                                                console.log('7')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[2]] == 'correct') {
                     if (val.charAt(2) != Object.keys(val2)[2]) {
+                                                console.log('8')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[2]] == 'absent') {
                     if (val.includes(Object.keys(val2)[2])) {
+                                                console.log('9')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                  if (val2[Object.keys(val2)[3]] == 'present') {
                     if (val.includes(Object.keys(val2)[3]) === false) {
+                                                console.log('10')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[3]] == 'correct') {
                     if (val.charAt(3) != Object.keys(val2)[3]) {
+                                                console.log('11')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[3]] == 'absent') {
                     if (val.includes(Object.keys(val2)[3])) {
+                                                console.log('12')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                  if (val2[Object.keys(val2)[4]] == 'present') {
                     if (val.includes(Object.keys(val2)[4]) === false) {
+                                                console.log('13')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[4]] == 'correct') {
                     if (val.charAt(4) != Object.keys(val2)[4]) {
+                                                console.log('14')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
                 if (val2[Object.keys(val2)[4]] == 'absent') {
                     if (val.includes(Object.keys(val2)[4])) {
+                                                console.log('15')
+                        console.log(val)
+
                         resposne = false
                     }
                 }
