@@ -130,7 +130,7 @@ async function ready() {
             return tab
         }
         var word = 'skate'
-        list.forEach(function(val) {                
+        list.forEach(function(val) {     
             var resposne = true
             tab.forEach(function(val2) {                
                 if (val2[Object.keys(val2)[0]] == 'present') {
@@ -209,7 +209,7 @@ async function ready() {
                     }
                 }
             })
-            if (response == true) {
+            if (resposne == true) {
                 word = val
             }
         })
