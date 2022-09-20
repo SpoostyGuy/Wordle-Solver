@@ -265,6 +265,7 @@ async function ready() {
     type(word1)
     await new Promise(r => setTimeout(r, 2500));
     var word2 = getWord()
+    console.log(word2)
     if (word2 == 'won') {
         console.log('done')
         return
@@ -272,6 +273,7 @@ async function ready() {
     type(word2)
     await new Promise(r => setTimeout(r, 2500));
     var word3 = getWord()
+    console.log(word3)
     if (word3 == 'won') {
         console.log('done')
         return
@@ -279,6 +281,7 @@ async function ready() {
     type(word3)
     await new Promise(r => setTimeout(r, 2500));
     var word4 = getWord()
+    console.log(word4)
     if (word4 == 'won') {
         console.log('done')
         return
@@ -286,6 +289,7 @@ async function ready() {
     type(word4)
     await new Promise(r => setTimeout(r, 2500));
     var word5 = getWord()
+    console.log(word5)
     if (word5 == 'won') {
         console.log('done')
         return
