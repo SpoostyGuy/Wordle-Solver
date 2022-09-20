@@ -7,15 +7,26 @@ function type(word) {
     })
 }
 
+var normal = undefined
+
 async function ready() {
     var list = {}
-
+    var list2 = {}
+    
     await fetch('https://raw.githubusercontent.com/tabatkins/wordle-list/main/words')
         .then(res => res.text())
         .then(res => {
             list = res.split('\n')
         })
+   
+    await fetch('https://www.nytimes.com/games-assets/v2/wordle.f3b467d34b755ef412d0411ab13998780171c617.js')
+        .then(res => res.text())
+        .then(res => {
+            list2 = res.split(',_e=[')[1].split('],ke=')[0].replaceAll('"','').split(',')
+        })
     
+    var currentWord = list2[Math.round((new Date() - new Date(2021, 5, 20))/(1000*60*60*24))]
+         
     function wordleBasics(guess,soFar,word) {
         var table = {}
         guess.split('').forEach(function(val,index) {
@@ -44,8 +55,21 @@ async function ready() {
         return soFar
     }
     
+    function addCss(fileName) {
+
+      var head = document.head;
+      var link = document.createElement("link");
+
+      link.rel = "stylesheet";
+      link.href = fileName;
+
+      head.appendChild(link);
+    }
+    
+    addCss('https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css')
+    
     function getBestStartingWord() {
-        var array = list
+        var array = list2
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             const temp = array[i];
@@ -54,7 +78,16 @@ async function ready() {
         }
         console.log(array)
         var pointsYE = {}
-        array.forEach(async function(val) {
+        var used = []
+        for (let i = 0; i < 6; i++) {
+            var val = undefined
+            while (true) {
+                var valTemp = array[Math.floor(Math.random() * array.length)]
+                if (used.includes(valTemp) == false) {
+                        val = valTemp
+                    break
+                }
+            }
             var array2 = array
             var best = undefined
             var points = 9999999999999999999999999999
@@ -64,10 +97,11 @@ async function ready() {
                 array2[i] = array2[j];
                 array2[j] = temp;
             }
+            array2.pop(val)
             array2.forEach(async function(val2) {
                 var soFar = wordleBasics(val2,[],val)
-                for (let i = 0; i < 2; i++) {
-                    var word = getWord(soFar)
+                for (let i = 0; i < 1; i++) {
+                    var word = getWord(soFar,list2)
                     soFar = wordleBasics(word,soFar,val)
                     if (soFar == 'won') {
                         if (points > i) {
@@ -88,7 +122,7 @@ async function ready() {
                 }
             }
             console.log(best)
-        })
+        }
         console.log(pointsYE)
         var obj = pointsYE
         console.log(Object.keys(obj).reduce(function(a, b){ return obj[a] > obj[b] ? a : b }))
@@ -118,6 +152,56 @@ async function ready() {
         })
         return table
     }
+    
+    async function Normal() {
+        document.getElementById('bar').remove()
+        type('adieu')
+        await new Promise(r => setTimeout(r, 2500));
+        var word1 = getWord()
+        if (word1 == 'won') {
+            console.log('done')
+            return
+        }
+        console.log(word1)
+        type(word1)
+        await new Promise(r => setTimeout(r, 2500));
+        var word2 = getWord()
+        console.log(word2)
+        if (word2 == 'won') {
+            console.log('done')
+            return
+        }
+        type(word2)
+        await new Promise(r => setTimeout(r, 2500));
+        var word3 = getWord()
+        console.log(word3)
+        if (word3 == 'won') {
+            console.log('done')
+            return
+        }
+        type(word3)
+        await new Promise(r => setTimeout(r, 2500));
+        var word4 = getWord()
+        console.log(word4)
+        if (word4 == 'won') {
+            console.log('done')
+            return
+        }
+        type(word4)
+        await new Promise(r => setTimeout(r, 2500));
+        var word5 = getWord()
+        console.log(word5)
+        if (word5 == 'won') {
+            console.log('done')
+            return
+        }
+        type(word5)
+    }
+    
+    function Instant() {
+        document.getElementById('bar').remove()
+        type(currentWord)
+    }
 
     function getWord(tab2) {
         var tab = undefined
@@ -130,11 +214,11 @@ async function ready() {
             return tab
         }
         var word = 'skate'
-        list.forEach(function(val) {     
+        list.forEach(function(val) {
             var resposne = true
             tab.forEach(function(val2) {                
                 if (val2[Object.keys(val2)[0]] == 'present') {
-                    if (val.includes(Object.keys(val2)[0]) === false) {
+                    if (val.includes(Object.keys(val2)[0]) === false || val.charAt(0) === Object.keys(val2)[0]) {
                         resposne = false
                     }
                 }
@@ -149,7 +233,7 @@ async function ready() {
                     }
                 }
                  if (val2[Object.keys(val2)[1]] == 'present') {
-                    if (val.includes(Object.keys(val2)[1]) === false) {
+                    if (val.includes(Object.keys(val2)[1]) === false || val.charAt(1) === Object.keys(val2)[1]) {
                         resposne = false
                     }
                 }
@@ -164,7 +248,7 @@ async function ready() {
                     }
                 }
                  if (val2[Object.keys(val2)[2]] == 'present') {
-                    if (val.includes(Object.keys(val2)[2]) === false) {
+                    if (val.includes(Object.keys(val2)[2]) === false || val.charAt(2) === Object.keys(val2)[2]) {
                         resposne = false
                     }
                 }
@@ -179,7 +263,7 @@ async function ready() {
                     }
                 }
                  if (val2[Object.keys(val2)[3]] == 'present') {
-                    if (val.includes(Object.keys(val2)[3]) === false) {
+                    if (val.includes(Object.keys(val2)[3]) === false || val.charAt(3) === Object.keys(val2)[3]) {
                         resposne = false
                     }
                 }
@@ -194,7 +278,7 @@ async function ready() {
                     }
                 }
                  if (val2[Object.keys(val2)[4]] == 'present') {
-                    if (val.includes(Object.keys(val2)[4]) === false) {
+                    if (val.includes(Object.keys(val2)[4]) === false || val.charAt(4) === Object.keys(val2)[4]) {
                         resposne = false
                     }
                 }
@@ -215,47 +299,31 @@ async function ready() {
         })
         return word
     }
-    type('adieu')
-    await new Promise(r => setTimeout(r, 2500));
-    var word1 = getWord()
-    if (word1 == 'won') {
-        console.log('done')
-        return
+    
+    
+        document.body.insertAdjacentHTML( 'beforeend', `<aside id="bar" class="mdc-snackbar" style="display: flex; z-index: 2147483647;">
+  <div class="mdc-snackbar__surface" role="status" aria-relevant="additions" style="padding-left: 0px; padding-right: 8px; display: flex; align-items: center; justify-content: flex-start; box-sizing: border-box; transform: scale(1); opacity: 1;">
+    <div class="mdc-snackbar__label" aria-atomic="false" style="visibility: visible;">I am able to instantly guess today's wordle</div>
+    <div class="mdc-snackbar__actions" aria-atomic="true" style="visibility: visible;">
+      <button type="button" id="normal" class="mdc-button mdc-snackbar__action" style="pointer-events: all;">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">NORMAL</span>
+      </button><button type="button" id="instant" class="mdc-button mdc-snackbar__action" style="pointer-events: all;">
+        <div class="mdc-button__ripple"></div>
+        <span class="mdc-button__label">INSTANT</span>
+      </button>
+    </div>
+  </div>
+</aside>`)
+    
+    document.getElementById('normal').onclick = function() {
+        Normal()
     }
-    console.log(word1)
-    type(word1)
-    await new Promise(r => setTimeout(r, 2500));
-    var word2 = getWord()
-    console.log(word2)
-    if (word2 == 'won') {
-        console.log('done')
-        return
+    
+    document.getElementById('instant').onclick = function() {
+        Instant()
     }
-    type(word2)
-    await new Promise(r => setTimeout(r, 2500));
-    var word3 = getWord()
-    console.log(word3)
-    if (word3 == 'won') {
-        console.log('done')
-        return
-    }
-    type(word3)
-    await new Promise(r => setTimeout(r, 2500));
-    var word4 = getWord()
-    console.log(word4)
-    if (word4 == 'won') {
-        console.log('done')
-        return
-    }
-    type(word4)
-    await new Promise(r => setTimeout(r, 2500));
-    var word5 = getWord()
-    console.log(word5)
-    if (word5 == 'won') {
-        console.log('done')
-        return
-    }
-    type(word5)
+    
 }
 
 ready()
