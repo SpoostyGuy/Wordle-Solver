@@ -1,4 +1,10 @@
 function type(word) {
+    document.querySelector('[data-key="←"]').click()
+    document.querySelector('[data-key="←"]').click()
+    document.querySelector('[data-key="←"]').click()
+    document.querySelector('[data-key="←"]').click()
+    document.querySelector('[data-key="←"]').click()
+    document.querySelector('[data-key="←"]').click()
     word.split('').forEach(function(val,index) {
         document.querySelector('[data-key="' + val.toLowerCase() + '"]').click()
         if (index == (word.split('').length-1)) {
@@ -25,7 +31,18 @@ async function ready() {
             list2 = res.split(',_e=[')[1].split('],ke=')[0].replaceAll('"','').split(',')
         })
     
-    var currentWord = list2[Math.round((new Date() - new Date(2021, 5, 20))/(1000*60*60*24))]
+    var wordleStart = new Date(2021, 5, 19);
+    var today = new Date();
+    var currentWord = undefined
+    
+    list2.forEach(function(word){
+        if(wordleStart.setHours(0,0,0,0) == today.setHours(0,0,0,0)) {
+            currentWord = word
+        }
+        wordleStart.setDate(wordleStart.getDate() + 1);
+    })
+    
+    console.log(currentWord)
          
     function wordleBasics(guess,soFar,word) {
         var table = {}
@@ -154,7 +171,9 @@ async function ready() {
     }
     
     async function Normal() {
-        document.getElementById('bar').remove()
+        document.getElementsByClassName('Keyboard-module_keyboard__1HSnn')[0].style.display = 'none'
+        document.body.setAttribute('onkeydown','document.querySelector(`[data-key="←"]`).click()')
+        document.getElementById('bar').style.display = 'none'
         type('adieu')
         await new Promise(r => setTimeout(r, 2500));
         var word1 = getWord()
@@ -199,6 +218,8 @@ async function ready() {
     }
     
     function Instant() {
+        document.getElementsByClassName('Keyboard-module_keyboard__1HSnn')[0].style.display = 'none'
+        document.body.setAttribute('onkeydown','document.querySelector(`[data-key="←"]`).click()')
         document.getElementById('bar').remove()
         type(currentWord)
     }
